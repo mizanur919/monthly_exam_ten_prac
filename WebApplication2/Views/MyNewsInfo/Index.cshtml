@@ -1,0 +1,102 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Style.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://knockoutjs.com/downloads/knockout-3.4.2.js"></script>
+    <script type="text/javascript">
+        var model = {
+            id: ko.observable(""),
+            title: ko.observable(""),
+            description: ko.observable(""),
+            records: ko.observableArray([])
+        }
+        function blank() {
+            $('#t1').val("");
+            $('#t2').val("");
+            $('#t3').val("");
+        }
+        function Ajax(method, url) {
+            var productData = {
+                "id": $("#t1").val(),
+                "title": $("#t2").val(),
+                "description": $("#t3").val(),
+            };
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    type: method,
+                    url: url,
+                    data: JSON.stringify(productData),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (data) {
+                        res = data;
+                        resolve(res);
+                        blank();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.responseText)
+                    }
+                });
+            });
+        }
+
+        function refresh() {
+            Ajax("get", "/MyNewsInfo/Get").then(function (a) {
+                model.records(a);
+            })
+        }
+        refresh();
+        function work(m, u) {
+            Ajax(m, u).then(function (a) {
+                refresh();
+            })
+        }
+
+        function edit(a, b, c) {
+            $("#t1").val(a);
+            $("#t2").val(b);
+            $("#t3").val(c);
+        }
+        $(document).ready(function () {
+            ko.applyBindings();
+        })
+    </script>
+</head>
+<body>
+    <h2>CRUD</h2>
+    <label for="id">ID</label><br />
+    <input type="text" id="t1" data-bind="value: model.id" /><br />
+    <label for="title">Title</label><br />
+    <input type="text" id="t2" data-bind="value: model.title" /><br />
+    <label for="description">Description</label><br />
+    <input type="text" id="t3" data-bind="value: model.description" /><br /><br />
+    <input type="button" id="b1" value="Add" data-bind="click:function(){work('POST','/MyNewsInfo/Create')}" />
+    <input type="button" id="b2" value="Update" data-bind="click:function(){work('POST','/MyNewsInfo/Edit/'+$('#t1').val())}" />
+    <input type="button" id="b3" value="Delete" data-bind="click:function(){work('get','/MyNewsInfo/Delete/'+$('#t1').val())}" /><br />
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach:model.records()">
+            <tr>
+                <td data-bind="text:title"></td>
+                <td data-bind="text:description"></td>
+                <td><a href="#" data-bind="click: function(){edit(id, title, description)}">Edit</a></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

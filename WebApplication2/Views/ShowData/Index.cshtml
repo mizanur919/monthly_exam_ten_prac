@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://knockoutjs.com/downloads/knockout-3.4.2.js"></script>
+</head>
+<body>
+    <h2>CRUF</h2>
+    <label for="id">ID</label><br />
+    <input type="text" name="id" id="t1" data-bind="value:model.id" /><br />
+    <label for="title">Title</label><br />
+    <input type="text" name="title" id="t2" data-bind="value:model.title" />
+    <label for="description">Description</label><br />
+    <input type="text" name="description" id="t3" data-bind="value:model.description" /><br />
+    <input type="button" id="b1" value="Add" data-bind="click:function(){work('POST','/MyNewsInfo/Create')}" />
+    <input type="button" id="b2" value="Update" data-bind="click:function(){work('POST','/MyNewsInfo/Edit/'+$('#t1').val())}" />
+    <input type="button" id="b3" value="Delete" data-bind="click:function(){work('get','/MyNewsInfo/Delete/'+$('#t1').val())}" /><br />
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-bind="text:title"></td>
+                <td data-bind="text:description"></td>
+                <td><a href="#" data-bind="click:function(){edit(id,title,description)}">Edit</a></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

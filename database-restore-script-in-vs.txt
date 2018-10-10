@@ -1,0 +1,28 @@
+//////   What is inside in the database ///////
+
+RESTORE FILELISTONLY  
+FROM DISK = 'E:\newspaper.bak'
+
+
+//// Restore the database into Visual Studio
+
+   RESTORE DATABASE newspaper  
+FROM DISK = 'E:\newspaper.bak'
+WITH MOVE 'newspaper' TO 'C:\Users\IDB-PC\newspaper.mdf',  
+MOVE 'newspaper_log' TO 'C:\Users\IDB-PC\newspaper.ldf' 
+
+
+///// How back up a database in .bak format
+
+select convert(varchar(100), getdate(),105)
+declare @a varchar(100) set @a='e:\busticket-'+covert(varchar(100), getdate(),105)+'.bak' 
+backup database busticket to disk=@a
+
+
+	select convert(varchar(100),getdate(),105)
+declare @a varchar(100)
+set @a='e:\mydb-'+convert(varchar(100),getdate(),105)+'.bak'
+
+backup database mydb to disk=@a
+
+

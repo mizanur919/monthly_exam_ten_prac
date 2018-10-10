@@ -1,0 +1,10 @@
+﻿body {
+}
+#edit {
+    background-color: cornflowerblue;
+    color: #000;
+}
+    #edit:hover {
+        background-color:#000;
+        color:#fff;
+    }
